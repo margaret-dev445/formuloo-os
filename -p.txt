@@ -1,0 +1,41 @@
+name: CI — Formuloo OS
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  ci:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check project structure
+        run: |
+          echo "Structure du projet :"
+          ls -la
+          echo "Dossier services :"
+          ls services/
+          echo "Dossier infrastructure :"
+          ls infrastructure/
+
+      - name: Validate docker-compose
+        run: |
+          docker compose -f infrastructure/docker-compose.yml config
+
+      - name: Pipeline success
+        run: |
+          echo "✅ Pipeline CI Formuloo OS OK !"
+          echo "Branche : ${{ github.ref_name }}"
+          echo "Commit  : ${{ github.sha }}"

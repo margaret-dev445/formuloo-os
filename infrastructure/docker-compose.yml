@@ -1,0 +1,104 @@
+
+services:
+
+  # ───────── API GATEWAY ─────────
+  kong:
+    image: kong:3.4
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    environment:
+      KONG_DATABASE: "off"
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+
+  # ───────── BASES DE DONNÉES ─────────
+  postgres-hr:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: hr_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - hr_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  postgres-compta:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: compta_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - compta_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  postgres-crm:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: crm_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - crm_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+  postgres-stock:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: stock_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - stock_data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+
+  postgres-projet:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: projet_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - projet_data:/var/lib/postgresql/data
+    ports:
+      - "5436:5432"
+
+  mongodb-reporting:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_DATABASE: reporting_db
+    volumes:
+      - reporting_data:/data/db
+    ports:
+      - "27017:27017"
+
+  # ───────── MONITORING ─────────
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    ports:
+      - "3100:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  hr_data:
+  compta_data:
+  crm_data:
+  stock_data:
+  projet_data:
+  reporting_data:
+  grafana_data:
