@@ -94,6 +94,67 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
 
+# ───────── MICROSERVICES ─────────
+  hr-service:
+    build: ../services/hr-service
+    ports:
+      - "3001:3000"
+    depends_on:
+      - postgres-hr
+    environment:
+      DATABASE_URL: postgres://user:password@postgres-hr:5432/hr_db
+      PORT: 3000
+
+  crm-service:
+    build: ../services/crm-service
+    ports:
+      - "3002:3000"
+    depends_on:
+      - postgres-crm
+    environment:
+      DATABASE_URL: postgres://user:password@postgres-crm:5432/crm_db
+      PORT: 3000
+
+  stock-service:
+    build: ../services/stock-service
+    ports:
+      - "3003:3000"
+    depends_on:
+      - postgres-stock
+    environment:
+      DATABASE_URL: postgres://user:password@postgres-stock:5432/stock_db
+      PORT: 3000
+
+  compta-service:
+    build: ../services/compta-service
+    ports:
+      - "3004:3000"
+    depends_on:
+      - postgres-compta
+    environment:
+      DATABASE_URL: postgres://user:password@postgres-compta:5432/compta_db
+      PORT: 3000
+
+  projet-service:
+    build: ../services/projet-service
+    ports:
+      - "3005:3000"
+    depends_on:
+      - postgres-projet
+    environment:
+      DATABASE_URL: postgres://user:password@postgres-projet:5432/projet_db
+      PORT: 3000
+
+  reporting-service:
+    build: ../services/reporting-service
+    ports:
+      - "3006:3000"
+    depends_on:
+      - mongodb-reporting
+    environment:
+      MONGODB_URL: mongodb://mongodb-reporting:27017/reporting_db
+      PORT: 3000
+
 volumes:
   hr_data:
   compta_data:
