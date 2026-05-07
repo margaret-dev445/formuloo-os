@@ -2,7 +2,7 @@ name: CI — Formuloo OS
 
 on:
   push:
-    branches: [master, develop]
+    branches: [master, develop, feature/*]
   pull_request:
     branches: [master, develop]
 
@@ -25,17 +25,51 @@ jobs:
         run: |
           echo "Structure du projet :"
           ls -la
-          echo "Dossier services :"
+          echo "Services :"
           ls services/
-          echo "Dossier infrastructure :"
-          ls infrastructure/
 
       - name: Validate docker-compose
         run: |
           docker compose -f infrastructure/docker-compose.yml config
 
+      - name: Tests hr-service
+        run: |
+          cd services/hr-service
+          npm ci
+          npm run test
+
+      - name: Tests crm-service
+        run: |
+          cd services/crm-service
+          npm ci
+          npm run test
+
+      - name: Tests stock-service
+        run: |
+          cd services/stock-service
+          npm ci
+          npm run test
+
+      - name: Tests compta-service
+        run: |
+          cd services/compta-service
+          npm ci
+          npm run test
+
+      - name: Tests projet-service
+        run: |
+          cd services/projet-service
+          npm ci
+          npm run test
+
+      - name: Tests reporting-service
+        run: |
+          cd services/reporting-service
+          npm ci
+          npm run test
+
       - name: Pipeline success
         run: |
-          echo "✅ Pipeline CI Formuloo OS OK !"
+          echo "✅ Tous les tests passent !"
           echo "Branche : ${{ github.ref_name }}"
           echo "Commit  : ${{ github.sha }}"
