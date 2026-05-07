@@ -7,7 +7,7 @@ export class HealthController {
   check() {
     return {
       statusCode: HttpStatus.OK,
-      status: 'success',
+      status: 'ok',
       service: 'projet-service',
       uptime: process.uptime(),
       timestamp: new Date().toISOString(),

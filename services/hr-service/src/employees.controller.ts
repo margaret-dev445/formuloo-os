@@ -7,6 +7,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 @Controller('employees')
 export class EmployeesController {
 
+
   // ── GET tous les employés ──────────────────
   @Get()
   @ApiOperation({ summary: 'Liste tous les employés' })
@@ -32,6 +33,7 @@ export class EmployeesController {
 
   // ── POST créer un employé ──────────────────
   @Post()
+  @Get()
   @ApiOperation({ summary: 'Crée un nouvel employé' })
   @ApiResponse({ status: 201, description: 'Employé créé avec succès' })
   @ApiResponse({ status: 400, description: 'Données invalides' })
