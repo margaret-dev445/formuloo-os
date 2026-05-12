@@ -6,7 +6,7 @@ import { RapportsController } from './rapports.controller';
 
 @Module({
   imports: [],
-  controllers: [AppController, HealthController],
+  controllers: [AppController, RapportsController],
   providers: [AppService],
 })
 export class AppModule {}

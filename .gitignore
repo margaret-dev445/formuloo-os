@@ -1,0 +1,17 @@
+# Variables d'environnement
+.env
+.env.local
+.env.production
+.env.staging
+
+# Dépendances
+node_modules/
+
+# Logs
+*.log
+
+# Docker
+.docker/
+
+# Build
+dist/

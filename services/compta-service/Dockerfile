@@ -1,4 +1,5 @@
 FROM node:20-alpine
+RUN apk update && apk upgrade
 WORKDIR /app
 COPY package*.json ./
 copy node_modules ./node_modules

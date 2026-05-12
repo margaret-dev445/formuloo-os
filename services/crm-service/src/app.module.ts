@@ -5,13 +5,8 @@ import { HealthController } from './health.controller';
 import { ClientsController } from './clients.controller';
 
 @Module({
-  imports: [
-  ],
-  controllers: [AppController, EmployeesController],
-  providers: [AppService],
-})
-export class AppModule {}
-  controllers: [AppController, HealthController],
+  imports: [],
+  controllers: [AppController, ClientsController],
   providers: [AppService],
 })
 export class AppModule {}

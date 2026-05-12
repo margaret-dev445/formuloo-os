@@ -2,13 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import compression from 'compression';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
+  app.use(helmet());
   app.use(compression());
 
-  // ── Configuration Swagger ──────────────────
   const config = new DocumentBuilder()
     .setTitle('HR Service API')
     .setDescription('API de gestion des ressources humaines de Formuloo OS')
@@ -19,9 +20,9 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  // Documentation accessible sur http://localhost:3001/api
 
   await app.listen(3000);
+
   console.log('HR Service running on port 3000');
   console.log('Documentation API: http://localhost:3001/api');
 }
