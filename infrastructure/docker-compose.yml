@@ -155,6 +155,32 @@ services:
       MONGODB_URL: mongodb://mongodb-reporting:27017/reporting_db
       PORT: 3000
 
+# ───────── AUTH SERVICE ─────────
+  postgres-auth:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - auth_data:/var/lib/postgresql/data
+    ports:
+      - "5437:5432"
+
+  auth-service:
+    build: ../services/auth-service
+    ports:
+      - "3007:3000"
+    depends_on:
+      - postgres-auth
+    environment:
+      DB_HOST: postgres-auth
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: auth_db
+      JWT_SECRET: formuloo-super-secret-jwt-key-2026
+      PORT: 3000
+
 volumes:
   hr_data:
   compta_data:
@@ -163,3 +189,4 @@ volumes:
   projet_data:
   reporting_data:
   grafana_data:
+  auth_data:

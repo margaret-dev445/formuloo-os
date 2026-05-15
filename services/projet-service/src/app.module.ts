@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthController } from './health.controller';
 import { ProjetsController } from './projets.controller';
 import { Projet } from './entities/projet.entity';
 import { ProjetService } from './projet.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -20,8 +23,13 @@ import { ProjetService } from './projet.service';
       synchronize: true,
     }),
     TypeOrmModule.forFeature([Projet]),
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'formuloo-super-secret-jwt-key-2026',
+      signOptions: { expiresIn: '7d' },
+    }),
   ],
   controllers: [AppController, HealthController, ProjetsController],
-  providers: [AppService, ProjetService],
+  providers: [AppService, ProjetService, JwtStrategy],
 })
 export class AppModule {}

@@ -1,10 +1,12 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { jwtAuthGuard } from './guards/jwt-auth.guard';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 
 @ApiTags('employees')
 @ApiBearerAuth()
+@UseGuards(jwtAuthGuard)
 @Controller('employees')
 export class EmployeesController {
 

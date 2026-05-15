@@ -1,4 +1,4 @@
-name: CI — Formuloo OS
+name: CI/CD Phase 2 — Formuloo OS
 
 on:
   push:
@@ -7,12 +7,13 @@ on:
     branches: [master, develop]
 
 jobs:
-  ci:
-    name: Build & Test
+
+  # ── JOB 1 : Tests unitaires + intégration ──
+  test:
+    name: Tests
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -21,11 +22,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Check project structure
+      - name: Check structure
         run: |
-          echo "Structure du projet :"
+          echo "Structure :"
           ls -la
-          echo "Services :"
           ls services/
 
       - name: Validate docker-compose
@@ -68,8 +68,39 @@ jobs:
           npm ci
           npm run test
 
+      - name: Tests auth-service
+        run: |
+          cd services/auth-service
+          npm ci
+          npm run test
+
+  # ── JOB 2 : Build Docker ──
+  build:
+    name: Build Docker
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build hr-service
+        run: |
+          docker build -t formuloo/hr-service:${{ github.sha }} \
+          services/hr-service
+
+      - name: Build crm-service
+        run: |
+          docker build -t formuloo/crm-service:${{ github.sha }} \
+          services/crm-service
+
+      - name: Build auth-service
+        run: |
+          docker build -t formuloo/auth-service:${{ github.sha }} \
+          services/auth-service
+
       - name: Pipeline success
         run: |
-          echo "✅ Tous les tests passent !"
+          echo "✅ CI/CD Phase 2 terminé !"
           echo "Branche : ${{ github.ref_name }}"
           echo "Commit  : ${{ github.sha }}"

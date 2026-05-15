@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthController } from './health.controller';
 import { RapportsController } from './rapports.controller';
 import { Rapport, RapportSchema } from './schemas/rapport.schema';
 import { RapportService } from './rapport.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -15,8 +18,13 @@ import { RapportService } from './rapport.service';
     MongooseModule.forFeature([
       { name: Rapport.name, schema: RapportSchema }
     ]),
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'formuloo-super-secret-jwt-key-2026',
+      signOptions: { expiresIn: '7d' },
+    }),
   ],
   controllers: [AppController, HealthController, RapportsController],
-  providers: [AppService, RapportService],
+  providers: [AppService, RapportService, JwtStrategy],
 })
 export class AppModule {}
