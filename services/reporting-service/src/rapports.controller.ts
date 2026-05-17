@@ -1,12 +1,12 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, UseGuards} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { jwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RapportService } from './rapport.service';
 import { CreateRapportDto } from './dto/create-rapport.dto';
 
 @ApiTags('rapports')
 @ApiBearerAuth()
-@UseGuards(jwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('rapports')
 export class RapportsController {
 
