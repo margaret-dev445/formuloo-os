@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe, UseGuards} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { jwtAuthGuard } from './guards/jwt-auth.guard';
 import { EmployeeService } from './employee.service';
@@ -6,12 +6,12 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 
 @ApiTags('employees')
 @ApiBearerAuth()
-@UseGuards(jwtAuthGuard)
 @Controller('employees')
 export class EmployeesController {
 
   constructor(private readonly employeeService: EmployeeService) {}
 
+  @UseGuards(jwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Liste tous les employés' })
   @ApiResponse({ status: 200, description: 'Liste récupérée avec succès' })
