@@ -88,11 +88,6 @@ jobs:
           docker build -t formuloo/crm-service:${{ github.sha }} \
           services/crm-service
 
-      - name: Build auth-service
-        run: |
-          docker build -t formuloo/auth-service:${{ github.sha }} \
-          services/auth-service
-
       - name: Pipeline success
         run: |
           echo "✅ CI/CD Phase 2 terminé !"
