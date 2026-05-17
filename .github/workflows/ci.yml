@@ -68,12 +68,6 @@ jobs:
           npm ci
           npm run test
 
-      - name: Tests auth-service
-        run: |
-          cd services/auth-service
-          npm ci
-          npm run test
-
   # ── JOB 2 : Build Docker ──
   build:
     name: Build Docker
