@@ -21,7 +21,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  await app.listen(3000, '0.0.0.0');
   console.log('Reporting Service running on port 3000');
   console.log('Documentation API: http://localhost:3006/api');
 }

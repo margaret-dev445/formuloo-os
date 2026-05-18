@@ -1,5 +1,14 @@
 global:
   scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files:
+  - "alerts/*.yml"
 
 scrape_configs:
 
@@ -10,3 +19,40 @@ scrape_configs:
   - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']
+
+  - job_name: 'hr-service'
+    static_configs:
+      - targets: ['hr-service:3000']
+    metrics_path: '/metrics'
+
+  - job_name: 'crm-service'
+    static_configs:
+      - targets: ['crm-service:3000']
+    metrics_path: '/metrics'
+
+  - job_name: 'stock-service'
+    static_configs:
+      - targets: ['stock-service:3000']
+    metrics_path: '/metrics'
+
+  - job_name: 'compta-service'
+    static_configs:
+      - targets: ['compta-service:3000']
+    metrics_path: '/metrics'
+
+  - job_name: 'projet-service'
+    static_configs:
+      - targets: ['projet-service:3000']
+    metrics_path: '/metrics'
+
+  - job_name: 'reporting-service'
+    static_configs:
+      - targets: ['reporting-service:3000']
+    metrics_path: '/metrics'
+
+  - job_name: 'auth-service'
+    static_configs:
+      - targets: ['auth-service:3000']
+    metrics_path: '/metrics'
+
+ 

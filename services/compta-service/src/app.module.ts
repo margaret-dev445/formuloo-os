@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthController } from './health.controller';
@@ -9,13 +10,13 @@ import { FacturesController } from './factures.controller';
 import { Facture } from './entities/facture.entity';
 import { FactureService } from './facture.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { HttpModule } from '@nestjs/axios';
-import { HttpClientService } from './http-client.service';
 
 @Module({
   imports: [
-  HttpModule,
- ], 
+    PrometheusModule.register({
+      defaultMetrics: { enabled: true },
+      path: '/metrics',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'postgres-compta',
@@ -34,6 +35,6 @@ import { HttpClientService } from './http-client.service';
     }),
   ],
   controllers: [AppController, HealthController, FacturesController],
-  providers: [AppService, FactureService, JwtStrategy,HttpClientService],
+  providers: [AppService, FactureService, JwtStrategy],
 })
 export class AppModule {}

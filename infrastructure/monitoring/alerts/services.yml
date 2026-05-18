@@ -1,0 +1,43 @@
+groups:
+  - name: formuloo-alerts
+    rules:
+
+      # Alerte service down
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} est DOWN !"
+          description: "Le service {{ $labels.job }} ne répond plus depuis 1 minute"
+
+      # Alerte haute latence
+      - alert: HighLatency
+        expr: http_request_duration_seconds{quantile="0.95"} > 0.5
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latence élevée sur {{ $labels.job }}"
+          description: "P95 > 500ms depuis 3 minutes"
+
+      # Alerte taux d'erreur élevé
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Taux d'erreur élevé sur {{ $labels.job }}"
+          description: "Plus de 5% d'erreurs depuis 2 minutes"
+
+      # Alerte mémoire élevée
+      - alert: HighMemoryUsage
+        expr: nodejs_heap_used_bytes > 500000000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Mémoire élevée sur {{ $labels.job }}"
+          description: "Heap Node.js > 500MB depuis 5 minutes"
