@@ -2,13 +2,13 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
+rule_files:
+  - "alerts/services.yml"
+
 alerting:
   alertmanagers:
     - static_configs:
         - targets: []
-
-rule_files:
-  - "alerts/*.yml"
 
 scrape_configs:
 
@@ -50,9 +50,6 @@ scrape_configs:
       - targets: ['reporting-service:3000']
     metrics_path: '/metrics'
 
-  - job_name: 'auth-service'
-    static_configs:
-      - targets: ['auth-service:3000']
-    metrics_path: '/metrics'
+  
 
  
